@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            width: 400px; /* Set a fixed width for the popup */
+            padding: 1rem;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4F46E5;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Override default body margins for the popup */
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* All Tailwind CSS from the CDN is now here */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        .text-gray-900 { color: #111827; }
+        .text-gray-500 { color: #6b7280; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .w-full { width: 100%; }
+        .h-40 { height: 10rem; }
+        .p-4 { padding: 1rem; }
+        .border-2 { border-width: 2px; }
+        .border-gray-300 { border-color: #d1d5db; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .focus\:border-primary:focus { border-color: #4F46E5; }
+        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .resize-none { resize: none; }
+        .mt-4 { margin-top: 1rem; }
+        .bg-primary { background-color: #4F46E5; }
+        .text-white { color: #ffffff; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .hover\:bg-indigo-600:hover { background-color: #4f46e5; }
+        .focus\:ring-2:focus { box-shadow: 0 0 0 2px #4F46E5; }
+        .focus\:ring-primary:focus { box-shadow: 0 0 0 2px #4F46E5; }
+        .focus\:ring-offset-2:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .hidden { display: none; }
+        .mt-6 { margin-top: 1.5rem; }
+        .p-6 { padding: 1.5rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .font-semibold { font-weight: 600; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .h-3 { height: 0.75rem; }
+        .rounded-full { border-radius: 9999px; }
+        .text-gray-700 { color: #374151; }
+        .whitespace-pre-wrap { white-space: pre-wrap; }
+        .list-disc { list-style-type: disc; }
+        .list-inside { list-style-position: inside; }
+        .p-4 { padding: 1rem; }
+        .bg-danger { background-color: #EF4444; }
+        .text-white { color: #ffffff; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .bg-success { background-color: #10B981; }
+        .bg-warning { background-color: #F59E0B; }
+        .flex-col { flex-direction: column; }
+        .gap-4 { gap: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<div class="container card">
+    <div class="p-6">
+        <h1 class="text-xl font-bold text-center text-gray-900 mb-4">Credibility Checker</h1>
+        <p class="text-center text-gray-500 text-sm mb-6">Paste text to check its credibility.</p>
+
+        <textarea id="inputText" class="w-full h-40 p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary transition-all resize-none" placeholder="Paste your text here..."></textarea>
+
+        <button id="checkButton" class="mt-4 w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex items-center justify-center">
+            Check Credibility
+        </button>
+
+        <div id="loadingIndicator" class="mt-4 hidden flex justify-center">
+            <div class="loader"></div>
+        </div>
+
+        <div id="results" class="mt-6 p-6 card hidden">
+            <h2 class="text-lg font-bold text-gray-900 mb-4">Analysis Results</h2>
+            <div id="credibilityScore" class="mb-4">
+                <span class="font-semibold text-base">Credibility Score: </span>
+                <span id="scoreValue" class="text-xl font-bold"></span>
+                <div id="scoreIndicator" class="mt-2 h-3 rounded-full"></div>
+            </div>
+
+            <div id="analysis" class="mb-4">
+                <p class="font-semibold text-base">AI Analysis:</p>
+                <p id="analysisText" class="text-gray-700 text-sm mt-2 whitespace-pre-wrap"></p>
+            </div>
+
+            <div id="sources" class="mb-4">
+                <p class="font-semibold text-base">Cross-referenced Sources:</p>
+                <ul id="sourcesList" class="list-disc list-inside text-gray-700 text-sm mt-2"></ul>
+            </div>
+        </div>
+        
+        <div id="errorMessage" class="mt-6 p-4 bg-danger text-white rounded-lg hidden">
+            <p>An error occurred. Please try again later.</p>
+        </div>
+    </div>
+</div>
+
+<script src="js/popup.js"></script>
+
+</body>
+</html>
