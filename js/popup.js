@@ -1,3 +1,6 @@
+// Paste your API key here
+const apiKey = "AIzaSyBabW_45sr9yXDQSfkvm3lRzxNME9HtvCQ";
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM elements
     const checkButton = document.getElementById('checkButton');
@@ -9,6 +12,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const analysisText = document.getElementById('analysisText');
     const sourcesList = document.getElementById('sourcesList');
     const errorMessage = document.getElementById('errorMessage');
+
+    // Function to get the selected text from the active tab.
+    const getSelectedText = () => {
+      return window.getSelection().toString().trim();
+    };
+
+    // As soon as the popup opens, execute the function on the active tab
+    // to get the selected text and populate the input field.
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tabs[0].id },
+          function: getSelectedText,
+        },
+        (results) => {
+          if (results && results[0] && results[0].result) {
+            inputText.value = results[0].result;
+            // Now, automatically run the analysis!
+            checkCredibility();
+          }
+        }
+      );
+    });
 
     // Function to handle API call and response
     const checkCredibility = async () => {
@@ -58,8 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             };
-
-            const apiKey = "MY_API_KEY";
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -122,8 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Show the results section
         resultsDiv.classList.remove('hidden');
-        };
+    };
 
-    // Event listener for the button
-    checkButton.addEventListener('click', checkCredibility);
+    // Note: The click listener for the button has been removed for auto-analysis.
+    // However, if you'd like to keep the button as an option, you can add this line back:
+    // checkButton.addEventListener('click', checkCredibility);
 });
