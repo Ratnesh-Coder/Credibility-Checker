@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsDiv.classList.remove('hidden');
     };
 
-    // Note: The click listener for the button has been removed for auto-analysis.
-    // However, if you'd like to keep the button as an option, you can add this line back:
-    // checkButton.addEventListener('click', checkCredibility);
+    // Add this line back to make the button work for manual input.
+    checkButton.addEventListener('click', checkCredibility);
 });
