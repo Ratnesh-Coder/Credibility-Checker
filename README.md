@@ -1,51 +1,81 @@
-# Fake-News-Detector
-A browser extension that uses the Gemini API to analyze text for credibility, providing a score, AI-powered analysis, and cross-referenced sources.
+# Credibility-Checker
+A browser extension that uses the Gemini API to analyse text for credibility, providing a score, AI-powered analysis, and cross-referenced sources.
 
-Credibility Checker Browser Extension
-A browser extension that uses the Gemini API to analyze text for credibility, providing users with a score, an AI-powered analysis, and cross-referenced sources.
+![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-blue?logo=google-chrome&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Made with Gemini API](https://img.shields.io/badge/Made%20with-Gemini%20API-orange?logo=google)
 
-Features
-Text Analysis: Get a credibility score from 0 to 100 on any text.
+# 🔎 Credibility Checker (Fake News Detector)
 
-AI-Powered Analysis: Receive a detailed breakdown of why a score was given.
+A Chrome extension that helps users evaluate the **credibility of online text**.  
+It uses the **Google Gemini API** to provide a **credibility score, AI-powered analysis, and cross-referenced sources**, making it easier to spot misinformation.
 
-Source Cross-referencing: See a list of potential sources to verify the information.
+---
 
-Simple UI: A clean and intuitive pop-up interface for quick checks.
+## ✨ Features
+- ✅ **Credibility Score (0–100)** – Quickly see how reliable the text is.  
+- 🧠 **AI-Powered Analysis** – Get explanations for why a score was assigned.  
+- 📚 **Cross-referenced Sources** – Suggested references for fact-checking.  
+- 🖱️ **Highlight or Paste Text** – Analyze text directly from web pages.  
+- 🎨 **Clean UI** – Lightweight, simple popup design.  
 
-Getting Started
-Follow these steps to load the extension in your browser.
+---
 
-1. Project Setup
-Ensure your project folder contains the following files and folders:
+## 🛠️ Tech Stack
+- **Manifest V3** (Chrome Extensions API)  
+- **HTML, CSS, JavaScript**  
+- **Google Gemini API** for text analysis  
 
-manifest.json
+---
 
-popup.html
+## 🚀 Getting Started
 
-js/ (folder containing popup.js)
+### 1. Clone the Repository
+Git Bash
+```git clone https://github.com/your-username/credibility-checker.git```
+```cd credibility-checker```
 
-images/ (folder containing icon16.svg, icon48.svg, and icon128.svg)
+### 2. Project Structure
+credibility-checker
+│── manifest.json
+│── popup.html
+│── content.js
+│── js/
+│   └── popup.js
+│── images/
+│   ├── icon16.svg
+│   ├── icon48.svg
+│   └── icon128.svg
 
-2. Get an API Key
-The extension requires a Google Gemini API key to function.
+### 3. Get a Gemini API Key
+Go to Google AI Studio
+Generate a new API key
+Open js/popup.js and replace:
+const API_KEY = "YOUR_API_KEY_GOES_HERE";
 
-Go to Google AI Studio.
+### 4. Load the Extension in Chrome
+Open chrome://extensions
+Enable Developer mode (top right)
+Click Load unpacked
+Select the project folder
+The extension will appear in your browser toolbar 🎉
 
-Create a new API key.
+🖼️ Screenshots
+(Optional – add screenshots of the popup UI here for better presentation.)
 
-Open js/popup.js and replace "YOUR_API_KEY_GOES_HERE" with your new key.
+⚙️ How It Works
+1. User highlights or pastes text into the extension popup.
+2. The text is sent to the Gemini API with a structured request.
+3. The API responds with:
+    Credibility Score
+    AI Analysis (reasoning)
+    Suggested Sources
+4. Results are displayed instantly in the popup UI.
 
-3. Load the Extension in Your Browser
-Open your browser and navigate to chrome://extensions.
+📜 License
+This project is licensed under the MIT License – feel free to use, modify, and distribute it.
 
-Enable Developer mode in the top-right corner.
-
-Click the Load unpacked button.
-
-Select your project's main folder.
-
-The "Credibility Checker" extension should now appear in your browser's toolbar.
-
-How It Works
-The extension sends the user-inputted text to the Gemini API, which processes the request using a structured prompt. The API's response, formatted as a JSON object, is then used to display the credibility score, analysis, and sources in the pop-up.
+👨‍💻 Author
+Developed by Ratnesh ✨
+If you find this project useful, please ⭐ star the repository!
+>>>>>>> de24ebabe3dc3805a97894cd84b71bca3c5cc055
